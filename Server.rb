@@ -1,5 +1,6 @@
 require 'socket'
 require_relative 'Response'
+require_relative 'Request'
 
 class WebServer
   attr_reader :options
@@ -15,8 +16,8 @@ class WebServer
       puts "Listening for connections"
       client = server.accept
       puts "Connection received"
-      puts client.gets
-      requestObj = Request.new(stream).parse()
+      requestObj = Request.new(client.gets)
+      requestObj.parse
       puts Response.new.to_s
     end
   end
