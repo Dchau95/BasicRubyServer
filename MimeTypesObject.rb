@@ -5,7 +5,8 @@ class MimeTypesObject < ConfigFile
   attr_reader :mime_types
 
   def load
-
+    super
+    process_lines
   end
 
   def process_lines

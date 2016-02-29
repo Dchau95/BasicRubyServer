@@ -1,21 +1,21 @@
 class HtaccessObject
-	attr_reader :config
+  attr_reader :config
 
-	def initialize
+  def initialize
 
-	end
+  end
 
-	def auth_user_file
+  def auth_user_file
 		
-	end
+  end
 
-	def auth_type
-	end
+  def auth_type
+  end
 
-	def auth_name
-	end
+  def auth_name
+  end
 
-	def require
-	end
+  def require
+  end
 
 end 

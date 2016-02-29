@@ -17,5 +17,4 @@ class ConfigFile
       line.split
     end
   end
-
 end
