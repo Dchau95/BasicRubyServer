@@ -1,11 +1,11 @@
 class Response
-	#attr_reader :version
-	#attr_reader :response_code
-	#attr_reader :headers
-	#attr_reader :body
+  #attr_reader :version
+  #attr_reader :response_code
+  #attr_reader :headers
+  #attr_reader :body
 
-	RESPONSE_CODES = {
-		100 => "Continue",
+  RESPONSE_CODES = {
+    100 => "Continue",
     101 => "Switching Protocols",
     102 => "Processing",
     200 => "OK",
@@ -23,11 +23,11 @@ class Response
 	}
 
 	def initialize(version, response_code,header, body)
-		@version = version
-		@response_code = response_code
-		@headers = HeadersCollection.new(header)
-		@body = body
-	end
+    @version = version
+    @response_code = response_code
+    @headers = HeadersCollection.new(header)
+    @body = body
+  end
 
 	def to_s
 		@headers.parse

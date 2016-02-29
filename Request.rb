@@ -1,12 +1,12 @@
 class Request
 	attr_accessor :method, :uri, :version, :headers, :body
 
-	def initialize(socket)
-		#constructor, and then parse the Request
-		@socket_content  =  socket #you can replace it with a string here
-		@file = @socket_content.split("\n")
-		@request_hash = {}
-	end
+  def initialize(socket)
+  #constructor, and then parse the Request
+    @socket_content  =  socket #you can replace it with a string here
+    @file = @socket_content.split("\n")
+    @request_hash = {}
+  end
 
   def parse
     parse_method
