@@ -4,27 +4,32 @@ require_relative 'Request'
 require_relative 'ConfigFile'
 
 class WebServer
-  attr_reader :options
+  attr_reader :options, :mime_types, :httpd_config
 
   DEFAULT_PORT = 56789
 
-  def initialize(options={}, mime_types, http_config)
+  def initialize(options={})
     @options = options
-    @mime_types = mime_types
-    @httpd_config = httpd_config
   end
 
-  def read_config_file
-
+  def read_config_file(file)
+    File.readlines(file)
   end
 
   def start
+    lines = read_config_file('./config/httpd.conf')
+    #initialize mime_types and httpd_config and pass lines
+    #into their constructor
     loop do
       puts "Listening for connections"
       client = server.accept
       puts "Connection received"
       requestObj = Request.new(client.gets)
       requestObj.parse
+      puts requestObj.method
+      puts requestObj.uri
+      puts requestObj.version
+      puts requestObj.headers
       puts Response.new.to_s
     end
   end
