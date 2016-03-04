@@ -1,9 +1,30 @@
 #this object Parses, stores and hashes values from httpdconfig file
-class HttpdConfig
-	def initialize(httpd_config_file)
-		@file = httpd_config_file.split("\n")
-		@httpconfig_hash = {}
-	end
+require_relative 'ConfigFile'
+
+class HttpdConfig < ConfigFile
+  attr_reader :httpdconfig_hash
+
+	# def initialize(httpd_config_file)
+	# 	@file = httpd_config_file.split("\n")
+	# 	@httpconfig_hash = {}
+	# end
+
+  def load
+    super
+    process_lines
+  end
+
+  def process_lines
+    @httpdconfig_hash = {}
+    @lines.each do |conf_line|
+      temp = conf_line.split(" ")
+      if temp.length < 3
+        httpdconfig_hash[temp[0]] = temp[1]
+      else
+        httpdconfig_hash[temp[0]] = [temp[1], temp[2]]
+      end
+    end
+  end
 
 	#scan the httpdconfigfile for a value to return
 	def find_value(type)
@@ -46,27 +67,27 @@ class HttpdConfig
 
 	# returns values from server root
 	def server_root
-		@Httpdconfig_hash[:server_root] = find_value("ServerRoot")
+		@httpdconfig_hash[:server_root] = find_value("ServerRoot")
 	end
 
 	#returns documentroot values
 	def document_root
-		@Httpdconfig_hash[:document_root] = find_value("DocumentRoot")
+		@httpdconfig_hash[:document_root] = find_value("DocumentRoot")
 	end
 
 	#returns listen values
 	def listen
-		@Httpdconfig_hash[:listen] = find_value("Listen")
+		@httpdconfig_hash[:listen] = find_value("Listen")
 	end
 
 	#returns logfile values
 	def log_file
-		@Httpdconfig_hash[:log_file] = find_value("LogFile")
+		@httpdconfig_hash[:log_file] = find_value("LogFile")
 	end
 
 
 	def script_alias
-		@Httpdconfig_hash[:script_alias] = find_alias("ScriptAlias")
+		@httpdconfig_hash[:script_alias] = find_alias("ScriptAlias")
 	end
 
 	def script_alias_path(directory)
@@ -77,15 +98,15 @@ class HttpdConfig
 
 	#return an array of alias directories
 	def alias
-      @httpdconfig_hash[:alias] = find_alias("Alias")
-    end
+    @httpdconfig_hash[:alias] = find_alias("Alias")
+  end
 
-    #return an alias path given an directory
-    def alias_path(directory)
-    	directory_count = directory.count("\/")
+  #return an alias path given an directory
+  def alias_path(directory)
+    directory_count = directory.count("\/")
 		directory_count == 2 ? @httpdconfig_hash[:alias_path] = find_path(directory) : nil
 		@httpdconfig_hash[:alias_path] != "" ? @httpdconfig_hash[:alias_path] : nil
-    end
+  end
 end
 
 

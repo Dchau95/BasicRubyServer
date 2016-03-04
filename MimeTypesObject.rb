@@ -1,7 +1,6 @@
 require_relative 'ConfigFile'
 
 class MimeTypesObject < ConfigFile
-	
   attr_reader :mime_types
 
   def load
@@ -12,8 +11,8 @@ class MimeTypesObject < ConfigFile
   def process_lines
     @mime_types = {}
     @lines.each do |mime_line|
-    temp = mime_line.split("/")
-    mime_types[temp[1]] = temp[0]
+      temp = mime_line.split("/")
+      mime_types[temp[1]] = temp[0]
     end
   end
 

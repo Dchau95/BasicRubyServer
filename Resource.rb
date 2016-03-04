@@ -19,6 +19,12 @@ class Resource
       @resource_hash[:absolute_path]
     end
 
+    def mime_type
+    end
+
+    def script?
+    end
+
     def script_aliased?
       @conf.script_aliases != [] ? true : false
     end

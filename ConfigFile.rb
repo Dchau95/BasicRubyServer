@@ -6,7 +6,6 @@ class ConfigFile
     @lines = line_array
   end
 
-  #Should change each element in line_array into an array?
   #Needs to take out tabs and new lines
   def load
     lines.select do |line|
