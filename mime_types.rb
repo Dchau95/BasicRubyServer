@@ -1,4 +1,4 @@
-require_relative 'ConfigFile'
+require_relative 'config_file'
 
 class MimeTypes < ConfigFile
   attr_reader :mime_types

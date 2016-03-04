@@ -1,7 +1,7 @@
 require 'socket'
-require_relative 'Response'
-require_relative 'Request'
-require_relative 'ConfigFile'
+require_relative 'response'
+require_relative 'request'
+require_relative 'config_file'
 
 class WebServer
   attr_reader :options, :mime_types, :httpd_config

@@ -1,5 +1,5 @@
 #this object Parses, stores and hashes values from httpdconfig file
-require_relative 'ConfigFile'
+require_relative 'config_file'
 
 class HttpdConfig < ConfigFile
   attr_reader :httpdconfig_hash
@@ -26,38 +26,25 @@ class HttpdConfig < ConfigFile
     end
   end
 
-	#scan the httpdconfigfile for a value to return
-	def find_value(type)
-      value = ""
-      @file.each do |line|
-        if line.include? type
-          value = line.sub(type, "")
-          value = value.gsub("\"", "")
-          break
-        end
-      end
-      value = value.gsub(" ", "")
-    end  
-
     #scab the file for a path vaule to return
-    def find_path(directory)
-      path = ""
-      @file.each do |line|
-        if line.include? directory
-          path = line.sub("ScriptAlias " + directory, "")
-          path = path.sub("Alias " + directory, "")
-          path = path.gsub("\"", "")
-          break
-        end
+  def find_path(directory)
+    path = ""
+    @file.each do |line|
+      if line.include? directory
+        path = line.sub("ScriptAlias " + directory, "")
+        path = path.sub("Alias " + directory, "")
+        path = path.gsub("\"", "")
+        break
       end
-      path = path.gsub(" ", "")
     end
+    path = path.gsub(" ", "")
+  end
 
     #Scans the httpd.conf to return an array of specific type of aliases 
-    def find_alias(alias_type)
-      alias_array = []
-      @file.each do |line|
-        if line.include?(alias_type)
+  def find_alias(alias_type)
+    alias_array = []
+    @file.each do |line|
+      if line.include?(alias_type)
           split_array = line.split(" ")
           alias_array.push(split_array[1])
         end
@@ -67,27 +54,27 @@ class HttpdConfig < ConfigFile
 
 	# returns values from server root
 	def server_root
-		@httpdconfig_hash[:server_root] = find_value("ServerRoot")
+		@httpdconfig_hash["ServerRoot"]
 	end
 
 	#returns documentroot values
 	def document_root
-		@httpdconfig_hash[:document_root] = find_value("DocumentRoot")
+		@httpdconfig_hash["DocumentRoot"]
 	end
 
 	#returns listen values
 	def listen
-		@httpdconfig_hash[:listen] = find_value("Listen")
+		@httpdconfig_hash["Listen"]
 	end
 
 	#returns logfile values
 	def log_file
-		@httpdconfig_hash[:log_file] = find_value("LogFile")
+		@httpdconfig_hash["LogFile"] 
 	end
 
 
 	def script_alias
-		@httpdconfig_hash[:script_alias] = find_alias("ScriptAlias")
+		@httpdconfig_hash["ScriptAlias"]
 	end
 
 	def script_alias_path(directory)
@@ -98,7 +85,7 @@ class HttpdConfig < ConfigFile
 
 	#return an array of alias directories
 	def alias
-    @httpdconfig_hash[:alias] = find_alias("Alias")
+    @httpdconfig_hash["Alias"]
   end
 
   #return an alias path given an directory
@@ -108,8 +95,3 @@ class HttpdConfig < ConfigFile
 		@httpdconfig_hash[:alias_path] != "" ? @httpdconfig_hash[:alias_path] : nil
   end
 end
-
-
-
-
-
