@@ -1,4 +1,4 @@
-class HtaccessObject
+class Htaccess
   attr_reader :config
 
   def initialize

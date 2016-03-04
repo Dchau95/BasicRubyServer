@@ -1,6 +1,6 @@
 require_relative 'ConfigFile'
 
-class MimeTypesObject < ConfigFile
+class MimeTypes < ConfigFile
   attr_reader :mime_types
 
   def load
