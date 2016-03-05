@@ -2,6 +2,7 @@ require 'socket'
 require_relative 'response'
 require_relative 'request'
 require_relative 'config_file'
+require_relative 'worker'
 
 class WebServer
   attr_reader :options, :mime_types, :httpd_config
@@ -22,15 +23,11 @@ class WebServer
     #into their constructor
     loop do
       puts "Listening for connections"
-      client = server.accept
-      puts "Connection received"
-      requestObj = Request.new(client.gets)
-      requestObj.parse
-      puts requestObj.method
-      puts requestObj.uri
-      puts requestObj.version
-      puts requestObj.headers
-      puts Response.new.to_s
+      Thread.fork(server.accept) do |client|
+        logger = Logger.new(filepath)
+        worker = Worker.new(client)
+        client.close
+      end
     end
   end
 
