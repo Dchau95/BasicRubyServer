@@ -25,7 +25,7 @@ class WebServer
       puts "Listening for connections"
       Thread.fork(server.accept) do |client|
         logger = Logger.new(filepath)
-        worker = Worker.new(client)
+        worker = Worker.new(client, config, logger)
         client.close
       end
     end

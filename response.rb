@@ -1,8 +1,5 @@
 class Response
-  #attr_reader :version
-  #attr_reader :response_code
-  #attr_reader :headers
-  #attr_reader :body
+  attr_reader :version, :response_code, :headers, :body
 
   RESPONSE_CODES = {
     100 => "Continue",
@@ -22,7 +19,7 @@ class Response
     503 => "Service Unavaiable"
 	}
 
-	def initialize(version, response_code,header, body)
+	def initialize(version, response_code, header, body)
     @version = version
     @response_code = response_code
     @headers = HeadersCollection.new(header)

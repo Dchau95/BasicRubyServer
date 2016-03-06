@@ -1,5 +1,5 @@
 class Request
-	attr_accessor :method, :uri, :version, :headers, :body
+	attr_reader :method, :uri, :version, :headers, :body
 
   def initialize(socket)
   #constructor, and then parse the Request
