@@ -1,6 +1,8 @@
+#Make this a module
 require 'socket'
 require_relative 'logger'
 require_relative 'config_file'
+require_relative 'resource'
 require_relative 'response_factory'
 
 class Worker
@@ -14,14 +16,20 @@ class Worker
 
   def parse_stream
   	puts "Connection Received"
-  	#Creates request, do begin rescue end and see if gets 400
-  	requestObj = Request.new(client.gets)
-  	requestObj.parse
+  	
+    begin
+      request_obj = Request.new(@client.gets)
+      request_obj.parse
+    rescue
+      #Error code is 400
+    end
   	#Check resource and access somewhere here doing necessary begin rescue end
+    resource_obj = Resource.new(request_obj.uri, @config)
   	#following above, create htaccess checker object? Do stuff
   	#create new ResponseFactory
+    response_obj = ResponseFactory.create(request_obj, resource_obj)
   	#Log the response
+    logger.write(request_obj, response_obj)
   	#Send response back
   end
-
 end

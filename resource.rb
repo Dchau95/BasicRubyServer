@@ -11,7 +11,7 @@ class Resource
   def resolve
     if @conf.aliases != [] 
       @resource_hash[:absolute_path] = @conf.alias_path + @uri_request.uri.sub(@conf.aliases[0], "") + "/" + @conf.directory_index
-    elsif @conf.script_aliases != [] 
+    elsif script_aliased?
       @resource_hash[:absolute_path] = @conf.script_alias_path + @uri_request.uri.sub(@conf.script_aliases[0], "")
     else
       @resource_hash[:absolute_path] = @conf.document_root + @uri_request.uri + "/" + @conf.directory_index 
@@ -20,6 +20,7 @@ class Resource
   end
 
   def mime_type
+    @mimes
   end
 
   def script?
