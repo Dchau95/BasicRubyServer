@@ -21,7 +21,11 @@ class HttpdConfig < ConfigFile
       if temp.length < 3
         httpdconfig_hash[temp[0]] = temp[1]
       else
-        httpdconfig_hash[temp[0]] = [temp[1], temp[2]]
+        if httpdconfig_hash.has_key?(temp[0])
+          httpdconfig_hash[temp[0]][temp[1]] = temp[2]
+        else
+          httpdconfig_hash[temp[0]] = {temp[1] => temp[2]}
+        end
       end
     end
   end
@@ -72,26 +76,27 @@ class HttpdConfig < ConfigFile
 		@httpdconfig_hash["LogFile"] 
 	end
 
-
 	def script_alias
 		@httpdconfig_hash["ScriptAlias"]
 	end
 
 	def script_alias_path(directory)
-		directory_count = directory.count("\/")
-		directory_count == 2 ? @httpdconfig_hash[:script_alias_path] = find_path(directory) : nil
-		@httpdconfig_hash[:script_alias_path] != "" ? @httpdconfig_hash[:script_alias_path] : nil
+    @httpdconfig_hash["ScriptAlias"] != "" ? @httpdconfig_hash["ScriptAlias"][directory] : nil
+		#directory_count = directory.count("\/")
+		#directory_count == 2 ? @httpdconfig_hash[:script_alias_path] = find_path(directory) : nil
+		#@httpdconfig_hash[:script_alias_path] != "" ? @httpdconfig_hash[:script_alias_path] : nil
 	end
 
-	#return an array of alias directories
+	#return an hash of alias directories
 	def alias
     @httpdconfig_hash["Alias"]
   end
 
   #return an alias path given an directory
   def alias_path(directory)
-    directory_count = directory.count("\/")
-		directory_count == 2 ? @httpdconfig_hash[:alias_path] = find_path(directory) : nil
-		@httpdconfig_hash[:alias_path] != "" ? @httpdconfig_hash[:alias_path] : nil
+    @httpdconfig_hash["Alias"] != "" ? @httpdconfig_hash["Alias"][directory] : nil
+    #directory_count = directory.count("\/")
+		#directory_count == 2 ? @httpdconfig_hash[:alias_path] = find_path(directory) : nil
+		#@httpdconfig_hash[:alias_path] != "" ? @httpdconfig_hash[:alias_path] : nil
   end
 end

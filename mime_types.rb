@@ -11,11 +11,14 @@ class MimeTypes < ConfigFile
   def process_lines
     @mime_types = {}
     @lines.each do |mime_line|
-      temp = mime_line.split("/")
-      mime_types[temp[1]] = temp[0]
+      temp = mime_line.gsub(/\s+/, ' ').split(" ")
+      temp[1..-1].each do |file_extension|
+        @mime_types[file_extension] = temp[0]
+      end
     end
   end
 
   def for(extension)
+    @mime_types[extension]
   end
 end
