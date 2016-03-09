@@ -17,7 +17,7 @@ class Response
     404 => "Not Found",
     500 => "Internal Server Error",
     503 => "Service Unavaiable"
-	}
+    }
 
 	def initialize(version, response_code, header, body)
     @version = version

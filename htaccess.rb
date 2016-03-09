@@ -17,7 +17,7 @@ class Htaccess < ConfigFile
   end
 
   def auth_user_file
-		@config["AuthUserFile"]
+    @config["AuthUserFile"]
   end
 
   def auth_type
