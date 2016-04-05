@@ -1,4 +1,5 @@
 require_relative 'config_file'
+#Child class of ConfigFile, parses and holds data from mime.types
 
 class MimeTypes < ConfigFile
   attr_reader :mime_types
@@ -11,9 +12,10 @@ class MimeTypes < ConfigFile
   def process_lines
     @mime_types = {}
     @lines.each do |mime_line|
-      temp = mime_line.gsub(/\s+/, ' ').split(" ")
-      temp[1..-1].each do |file_extension|
-        @mime_types[file_extension] = temp[0]
+      if(mime_line.length > 2)
+        mime_line[1..-1].each do |extension|
+          @mime_types[extension] = mime_line[0]
+        end
       end
     end
   end

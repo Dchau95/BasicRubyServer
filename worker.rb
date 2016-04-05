@@ -1,9 +1,10 @@
-#Make this a module
 require 'socket'
 require_relative 'logger'
-require_relative 'config_file'
+require_relative 'httpd_config'
 require_relative 'resource'
 require_relative 'response_factory'
+
+#Class to handle a single request
 
 class Worker
 	#client (a reference to the stream that the server received a new request on)
@@ -17,20 +18,22 @@ class Worker
 
   def parse_stream
   	puts "Connection Received"
-  	
+    request_obj = Request.new(@client)
     begin
-      request_obj = Request.new(@client.gets)
       request_obj.parse
     rescue
-      #Error code is 400
+      response_obj = Response.new("HTTP 1.1", 400, "Content-Type: text/html\r\n", 
+        File.read("public_html/400.html"))
+      @logger.write(request_obj, response_obj)
+      @client.puts response_obj
+      @client.close
+      return
     end
-  	#Check resource and access somewhere here doing necessary begin rescue end
     resource_obj = Resource.new(request_obj.uri, @config, @mime)
-  	#following above, create htaccess checker object? Do stuff
-  	#create new ResponseFactory
     response_obj = ResponseFactory.create(request_obj, resource_obj)
-  	#Log the response
     @logger.write(request_obj, response_obj)
-  	#Send response back
+    @client.puts response_obj
+    @client.close
+    return
   end
 end

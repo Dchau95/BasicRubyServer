@@ -3,6 +3,7 @@ require_relative 'response'
 require_relative 'request'
 require_relative 'config_file'
 require_relative 'worker'
+#Server class, to listen for client's request and then pass it to a worker
 
 class WebServer
   attr_reader :options, :mime_types, :httpd_config
@@ -18,15 +19,22 @@ class WebServer
   end
 
   def start
-    lines = read_config_file('./config/httpd.conf')
-    #initialize mime_types and httpd_config and pass lines
-    #into their constructor
+    mime_types = MimeTypes.new(read_config_file('config/mime.types'))
+    httpd_config = HttpdConfig.new(read_config_file('config/httpd.conf'))
+    mime_types.load
+    httpd_config.load
+    logger = Logger.new(httpd_config.log_file)
     loop do
       puts "Listening for connections"
       Thread.fork(server.accept) do |client|
-        logger = Logger.new(filepath)
-        worker = Worker.new(client, config, mime_types, logger)
-        client.close
+        worker = Worker.new(client, httpd_config, mime_types, logger)
+        begin
+          worker.parse_stream
+        rescue
+          response = Response.new("HTTP/1.1", 500, "Content-Type: text/html\r\n", 
+            File.read("public_html/500.html"))
+          client.puts response
+        end
       end
     end
   end
