@@ -1,4 +1,4 @@
-AuthUserFile "/home/david/Desktop/667-workspace/server-12/public_html/protected/.htpasswd"
+AuthUserFile "/home/david/Desktop/BasicRubyServer/public_html/protected/.htpasswd"
 AuthType Basic
 AuthName "I Challenge You"
 Require user david eric
